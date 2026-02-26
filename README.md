@@ -1,1 +1,223 @@
-# outiljuridique
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOJ - Dashboard Interactif</title>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --accent: #304ffe;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --tab-inactive: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 { margin: 0; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
+
+        .tabs-bar {
+            display: flex;
+            flex-wrap: wrap;
+            background: #00000040;
+            padding: 10px 10px 0 10px;
+            gap: 5px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: var(--tab-inactive);
+            color: white;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .tab-btn:hover { background: #475569; }
+
+        .tab-btn.active {
+            background: var(--accent);
+            box-shadow: 0 -2px 10px rgba(48, 79, 254, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            background: #475569;
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        .card span { font-size: 11px; color: #94a3b8; margin-bottom: 5px; }
+        .card strong { color: #60a5fa; font-size: 15px; }
+
+        .logos { display: flex; justify-content: center; gap: 50px; padding: 15px; background: rgba(0,0,0,0.1); }
+        .logo { height: 50px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>DEPARTEMENT DE LA JUSTICE</h1>
+    </header>
+
+    <div class="logos">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/54/Seal_of_the_United_States_Department_of_Justice.svg" class="logo">
+        <img src="https://wiki.gtarp.life/images/5/51/Blaine_County_Seal.png" class="logo">
+    </div>
+
+    <div class="tabs-bar">
+        <button class="tab-btn active" onclick="openTab(event, 'lexique')">Lexique & Procédure</button>
+        <button class="tab-btn" onclick="openTab(event, 'assistant-juridique')">Assistant Juridique</button>
+        <button class="tab-btn" onclick="openTab(event, 'juge')">Juge</button>
+        <button class="tab-btn" onclick="openTab(event, 'procureur')">Procureur</button>
+    </div>
+
+    <div id="lexique" class="tab-content active">
+        <div class="grid">
+            <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas#bkmrk-chapitre-1%3A-d%C3%A9finiti" target="_blank" class="card"><span>Document</span><strong>Code Pénale</strong></a>
+            <a href="https://wiki.unityrp.io/books/le-legal/page/code-de-procedure-penale-san-andreas" target="_blank" class="card"><span>Document</span><strong>Code de Procédure Pénale </strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Document</span><strong>Outil de Justice</strong></a>
+            <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Objections</strong></a>
+            <a href="https://docs.google.com/document/d/1Y_28-YmkSnLyNLjsh1fTdKZs3oUrBl3iK-gZq9fW9oE/edit?tab=t.0#heading=h.cgjodkfafme6" target="_blank" class="card"><span>Document</span><strong>Vice de Procédure</strong></a>
+            <a href="https://www.canva.com/design/DAHCXWclYJw/ar7aQCsN0f6ezEcb_sACvw/edit?ui=e30" target="_blank" class="card"><span>Document</span><strong>Ornigramme </strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/1cE6D10dM7LdSoFS5JZ7bqmdemPb1htxNW3Yd_to3rv4/edit?gid=1503228696#gid=1503228696" target="_blank" class="card"><span>Document</span><strong>Guide des Amendements</strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="card"><span>Document</span><strong>Lexique Juridique</strong></a>           
+        </div>
+    </div>
+
+    <div id="assistant-juridique" class="tab-content">
+        <div class="grid">
+            <a href="https://www.canva.com/design/DAHCX5mCuOM/iU29BH_bh1aGuqU0KURzhQ/edit" target="_blank" class="card"><span>Outil</span><strong>Fiche de poste simplifiée</strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice Nord</strong></a>
+            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
+            <a href="https://docs.google.com/document/d/1Zzruk73LG-6lrp4MbiZQaj9JYWrmm_v4-W2aCshTp1M/edit?tab=t.0" edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
+        </div>
+    </div>
+
+    <div id="juge" class="tab-content">
+        <div class="grid">
+            <a href="https://docs.google.com/document/d/185W3j0ThS_qIMNaaPaXgubJHjvzasazYlbtUPEOevsM/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
+            <a href="https://docs.google.com/document/d/19AtrjJ7TmS7vFr0qan_4SNrHcRUF_kEFdQOdPNtalWU/edit?tab=t.0" target="_blank" class="card"><span>Mandat</span><strong>Cérémonie de Serment</strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice Nord</strong></a>
+            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
+            <a href="https://docs.google.com/document/d/1rAqrd0nhTpcEJkHRRJnNg98S0CgJ8L_825UO4dWjIZI edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/1CLLJ4glupACfhpDYXQ_Kag_PCq2Nd-5lA9FuwyLakA8/edit?gid=0#gid=0 edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Document Délivrables</strong></a>
+            <a href="https://www.canva.com/design/DAHCYb7ubqw/twE0EGF9sPZCC9C6QjvwyA/edit" target="_blank" class="card"><span>Outil</span><strong>Condamnation à une peine fédérale</strong></a>
+            <a href="https://www.canva.com/design/DAHCYj8yQ9o/fGsQvnSQESZOVv9zxBEg0w/edit" target="_blank" class="card"><span>Outil</span><strong>Restitution des saisies</strong></a>
+            <a href="https://www.canva.com/design/DAHCYvAeeIE/cfpie_4KkgV8VifkoWG-1Q/edit" target="_blank" class="card"><span>Outil</span><strong>Attestation de Vice de Procédure</strong></a>
+            <a href="https://sage.olivierd.fr/user/justice/docs/arrest-warrant" target="_blank" class="card"><span>Document</span><strong>Mandat D'arrêt</strong></a>
+            <a href="https://www.canva.com/design/DAHCYZTuvZQ/rPXXnqKp3xy3JX-KazWnHQ/edit?utm_content=DAHCYZTuvZQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="card"><span>Document</span><strong>Mandat de Perquisition</strong></a>
+            <a href="https://www.canva.com/design/DAHCYXkQF94/X2_iAzbrvbMasNaG9-Thvw/edit" target="_blank" class="card"><span>Document</span><strong>Mandat d'Intervention</strong></a>
+            <a href="https://sage.olivierd.fr/user/justice/docs/criminal-records" target="_blank" class="card"><span>Document</span><strong>Extrait de Casier Judiciaire</strong></a>
+            <a href="https://www.canva.com/design/DAHCYfwI8jE/rGm51u4jbWNRTJvjSQ_YkQ/edit?ui=e30" target="_blank" class="card"><span>Document</span><strong>Autorisation de Mise en Psychatrie</strong></a>
+            <a href="https://sage.olivierd.fr/user/justice/docs/psychological-followup" target="_blank" class="card"><span>Document</span><strong>Suivie Psychologique</strong></a>
+            <a href="https://www.canva.com/design/DAHCYZ0QCZ8/viEoRrdImUPcaQce2qKS1Q/edit" target="_blank" class="card"><span>Document</span><strong>Accord a l'Alamiable</strong></a>
+        </div>
+    </div>
+
+    <div id="procureur" class="tab-content">
+        <div class="grid">
+            <a href="https://docs.google.com/document/d/1KDW9KGjpVM38WyzsMXNziRlRWQQvgMolTip9CZAdCfQ/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
+            <a href="https://www.canva.com/design/DAGokNDsXOs/YZPpbM0j__8VEwGuXeyVCA/edit" target="_blank" class="card"><span>Contact</span><strong>Fiche de Poste Simplifié</strong></a>
+            <a href="https://docs.google.com/document/d/1GUnXCd9MJVAmStwk4HBon55wD3iNB3yyAoExNwlFDSY/edit?tab=t.0" target="_blank" class="card"><span>Contact</span><strong>Dossier des Réquisitions</strong></a>
+            <a href="https://docs.google.com/document/d/1GUnXCd9MJVAmStwk4HBon55wD3iNB3yyAoExNwlFDSY/edit?tab=t.0" target="_blank" class="card"><span>Contact</span><strong>Dossier des Réquisitions</strong></a>
+            <a href="https://docs.google.com/document/d/1jeuio1HZWDVSZF5dVhE5K0zHausgX_WWblSD4H_em-4/edit?tab=t.0" target="_blank" class="card"><span>Contact</span><strong>Céremonie de Serment</strong></a>
+            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice Nord</strong></a>
+            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
+            <a href="https://docs.google.com/document/d/1rAqrd0nhTpcEJkHRRJnNg98S0CgJ8L_825UO4dWjIZI" edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
+            <a href="https://docs.google.com/document/d/1EV536tSa8z4Bp01enlf4b_lAs5MxLPgQtQURSC2iA3o/edit?tab=t.0" edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Entretien des Plaintes</strong></a>
+        </div>
+    </div>
+
+    <div id="huissier" class="tab-content">
+        <div class="grid">
+            <a href="URL_ICI" target="_blank" class="card"><span>Terrain</span><strong>Saisies & Amendes</strong></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+</body>
+</html>
