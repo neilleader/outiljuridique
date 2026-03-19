@@ -34,7 +34,7 @@
                 <input type="text" id="username" placeholder="Identifiant" class="w-full p-4 rounded-xl border border-white/10">
                 <input type="password" id="password" placeholder="Mot de passe" class="w-full p-4 rounded-xl border border-white/10">
                 <button onclick="checkLogin()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-500 transition-all text-white shadow-lg uppercase">Se Connecter</button>
-                <p id="login-error" class="text-red-400 text-xs font-bold hidden text-center mt-2">Identifiants incorrects</p>
+                <p id="login-error" class="text-red-400 text-xs font-bold hidden text-center mt-2">Identifiants incorrects ou chargement...</p>
             </div>
         </div>
     </div>
@@ -62,8 +62,9 @@
                 <button id="tab-btn-em" class="tab-btn hidden bg-red-900/40" onclick="openTab(event, 'etat-major')">⚠️ État-Major</button>
             </div>
 
-            <div id="lexique" class="tab-content active"><div class="grid">
-                <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas#bkmrk-chapitre-1%3A-d%C3%A9finiti" target="_blank" class="card"><span>Document</span><strong>Code Pénale</strong></a>
+            <div id="lexique" class="tab-content active">
+                <div class="grid">
+                    <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas#bkmrk-chapitre-1%3A-d%C3%A9finiti" target="_blank" class="card"><span>Document</span><strong>Code Pénale</strong></a>
             <a href="https://wiki.unityrp.io/books/le-legal/page/code-de-procedure-penale-san-andreas" target="_blank" class="card"><span>Document</span><strong>Code de Procédure Pénale </strong></a>
             <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Document</span><strong>Outil de Justice</strong></a>
             <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Objections</strong></a>
@@ -72,17 +73,22 @@
             <a href="https://docs.google.com/spreadsheets/d/1cE6D10dM7LdSoFS5JZ7bqmdemPb1htxNW3Yd_to3rv4/edit?gid=1503228696#gid=1503228696" target="_blank" class="card"><span>Document</span><strong>Guide des Amendements</strong></a>
             <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="card"><span>Document</span><strong>Lexique Juridique</strong></a>
             </div></div>
+                </div>
+            </div>
 
-            <div id="assistant" class="tab-content"><div class="grid">
-                <a href="https://www.canva.com/design/DAHCX5mCuOM/iU29BH_bh1aGuqU0KURzhQ/edit" target="_blank" class="card"><span>Outil</span><strong>Fiche de poste simplifiée</strong></a>
+            <div id="assistant" class="tab-content">
+                <div class="grid">
+                    <a href="https://www.canva.com/design/DAHCX5mCuOM/iU29BH_bh1aGuqU0KURzhQ/edit" target="_blank" class="card"><span>Outil</span><strong>Fiche de poste simplifiée</strong></a>
             <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice</strong></a>
             <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
             <a href="https://docs.google.com/document/d/1Zzruk73LG-6lrp4MbiZQaj9JYWrmm_v4-W2aCshTp1M/edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
             <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="card"><span>Outil</span><strong>Documents Délivrables</strong></a>
-            </div></div>
+                </div>
+            </div>
 
-            <div id="juge" class="tab-content"><div class="grid">
-                <a href="https://docs.google.com/document/d/185W3j0ThS_qIMNaaPaXgubJHjvzasazYlbtUPEOevsM/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
+            <div id="juge" class="tab-content">
+                <div class="grid">
+                    <a href="https://docs.google.com/document/d/185W3j0ThS_qIMNaaPaXgubJHjvzasazYlbtUPEOevsM/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
             <a href="https://docs.google.com/document/d/11yasvo4Ay3gDhRm52bo__ggf59QyKEOocu4_Afbtzng/edit?tab=t.0" target="_blank" class="card"><span>Mandat</span><strong>Cérémonie de Serment</strong></a>
             <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice</strong></a>
             <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
@@ -100,17 +106,20 @@
             <a href="https://www.canva.com/design/DAHCajoIDNk/VA7VEyS4KjY6GZYVstqngA/edit" target="_blank" class="card"><span>Document</span><strong>Prolongation de GAV</strong></a>
             <a href="https://www.canva.com/design/DAHCYZ0QCZ8/viEoRrdImUPcaQce2qKS1Q/edit" target="_blank" class="card"><span>Document</span><strong>Accord à Alamiable</strong></a>
             <a href="https://www.canva.com/design/DAHCah19d9M/LIq1p9abnDtbLP7vF9TcxQ/edit" target="_blank" class="card"><span>Document</span><strong>Destitution temporaire de fonction</strong></a>
-            </div></div>
+                </div>
+            </div>
 
-            <div id="procureur" class="tab-content"><div class="grid">
-                <a href="https://docs.google.com/document/d/1zds28a_1AS0aE1xf5C-eRODnHnd9pTKXQiFoU_qnwpo/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
+            <div id="procureur" class="tab-content">
+                <div class="grid">
+                    <a href="https://docs.google.com/document/d/1zds28a_1AS0aE1xf5C-eRODnHnd9pTKXQiFoU_qnwpo/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
             <a href="https://www.canva.com/design/DAHCah19d9M/LIq1p9abnDtbLP7vF9TcxQ/edit" target="_blank" class="card"><span>Contact</span><strong>Fiche de Poste Simplifiée</strong></a>
             <a href="https://docs.google.com/document/d/1WksY2JmDok8Eyu8vUnvx864_CBdqRxQo9ao-L5JbjMw/edit?tab=t.0" target="_blank" class="card"><span>Contact</span><strong>Céremonie de Serment</strong></a>
             <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice </strong></a>
             <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
             <a href="https://docs.google.com/document/d/1rAqrd0nhTpcEJkHRRJnNg98S0CgJ8L_825UO4dWjIZI" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
             <a href="https://docs.google.com/document/d/1EV536tSa8z4Bp01enlf4b_lAs5MxLPgQtQURSC2iA3o/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Entretien des Plaintes</strong></a>
-            </div></div>
+                </div>
+            </div>
 
             <div id="etat-major" class="tab-content">
                 <h2 class="text-red-500 font-black mb-4 uppercase">Espace Direction</h2>
@@ -125,12 +134,12 @@
     <div id="admin-modal" class="modal-bg fixed inset-0 z-[10000] hidden flex items-center justify-center p-4">
         <div class="bg-[#1e293b] w-full max-w-4xl rounded-3xl border border-white/10 shadow-2xl p-8 text-white text-left">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest">Administration</h2>
+                <h2 class="text-xl font-bold uppercase tracking-widest">Administration des Accès</h2>
                 <button onclick="toggleAdminModal(false)" class="text-2xl text-slate-400 hover:text-white">&times;</button>
             </div>
             <div class="grid md:grid-cols-2 gap-10">
                 <div class="space-y-4">
-                    <h3 class="text-xs font-bold text-blue-400 uppercase">Nouveau Compte</h3>
+                    <h3 class="text-xs font-bold text-blue-400 uppercase">Ajouter un Membre</h3>
                     <input type="text" id="new-user" placeholder="Identifiant" class="w-full p-3 rounded-xl">
                     <input type="password" id="new-pass" placeholder="Mot de passe" class="w-full p-3 rounded-xl">
                     <select id="new-role" class="w-full p-3 rounded-xl">
@@ -139,16 +148,13 @@
                         <option value="Procureur">Procureur</option>
                         <option value="Juge en chef">Juge en chef</option>
                         <option value="Proc en chef">Proc en chef</option>
-                        <option value="Greffier en chef">Greffier en chef</option>
-                        <option value="Responsable justice Adjoint">Responsable justice Adjoint</option>
                         <option value="Responsable justice">Responsable justice</option>
-                        <option value="Directeur Adjoint">Directeur Adjoint</option>
                         <option value="Directeur">Directeur</option>
                     </select>
-                    <button onclick="createUser()" class="w-full bg-emerald-600 p-3 rounded-xl font-bold uppercase">Créer l'accès</button>
+                    <button onclick="createUser()" class="w-full bg-emerald-600 p-3 rounded-xl font-bold uppercase hover:bg-emerald-500 transition-colors">Créer le compte</button>
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-4">Utilisateurs actifs</h3>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-4">Membres Actifs</h3>
                     <div id="user-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
                 </div>
             </div>
@@ -156,103 +162,108 @@
     </div>
 
     <script>
-        // Initialisation
-        let users = JSON.parse(localStorage.getItem('doj_users')) || [
-            { user: "admin", pass: "1234", role: "Responsable justice" }
-        ];
+        // CONFIGURATION DU CLOUD (JSONBIN)
+        const BIN_ID = "69bbb558c3097a1dd53bc37b"; 
+        const API_KEY = "$2a$10$ZL6gJ9Al7JzcquZOqKWpr.HMCZuy8DHvAGQs614CinXvOBlvarsPW"; // <--- CHANGE CECI AVEC TA MASTER KEY !
+        const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
+        let users = [];
         let currentUser = null;
+
+        // Charger les utilisateurs au lancement
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${URL}/latest`, {
+                    headers: { "X-Master-Key": API_KEY }
+                });
+                const data = await response.json();
+                users = data.record;
+            } catch (err) {
+                console.error("Erreur cloud, chargement local par défaut...");
+                users = [{ user: "admin", pass: "1234", role: "Responsable justice" }];
+            }
+        }
+        loadUsers();
+
+        // Sauvegarder les utilisateurs sur le cloud
+        async function saveUsersToCloud() {
+            try {
+                await fetch(URL, {
+                    method: 'PUT',
+                    headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+                    body: JSON.stringify(users)
+                });
+            } catch (err) { alert("Erreur de connexion au serveur !"); }
+        }
 
         function checkLogin() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value.trim();
             const found = users.find(x => x.user === u && x.pass === p);
-
             if(found) {
                 currentUser = found;
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 setupPermissions();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
+            } else { 
+                document.getElementById('login-error').classList.remove('hidden'); 
             }
         }
 
         function setupPermissions() {
             document.getElementById('user-display').innerText = `${currentUser.user} | ${currentUser.role}`;
+            const rolesEM = ["Directeur", "Responsable justice", "Juge en chef", "Proc en chef"];
+            const rolesAdmin = ["Responsable justice", "Directeur"];
             
-            const btnGestion = document.getElementById('admin-btn');
-            const btnEM = document.getElementById('tab-btn-em');
-
-            const rolesEM = ["Directeur", "Directeur Adjoint", "Responsable justice", "Responsable adjoint justice", "Juge en chef", "Proc en chef", "Greffier en chef"];
-            const rolesAdmin = ["Responsable justice", "Responsable adjoint justice"];
-
             if (currentUser.user === "admin" || rolesAdmin.includes(currentUser.role)) {
-                btnGestion.classList.remove('hidden');
+                document.getElementById('admin-btn').classList.remove('hidden');
             }
             if (currentUser.user === "admin" || rolesEM.includes(currentUser.role)) {
-                btnEM.classList.remove('hidden');
+                document.getElementById('tab-btn-em').classList.remove('hidden');
             }
             renderUserList();
-        }
-
-        function toggleAdminModal(show) {
-            const modal = document.getElementById('admin-modal');
-            modal.classList.toggle('hidden', !show);
-            if(show) renderUserList();
         }
 
         function renderUserList() {
             const list = document.getElementById('user-list');
             if (!list) return;
-
-            list.innerHTML = users.map((u, i) => {
-                // Sécurité : au cas où u.role serait indéfini
-                const roleName = u.role || "Membre";
-                const isResp = roleName.toLowerCase().includes('responsable');
-                const badgeClass = isResp ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400';
-                
-                return `
-                    <div class="bg-black/40 p-3 rounded-lg flex justify-between items-center border border-white/10 mb-2">
-                        <div class="text-left">
-                            <p class="text-sm font-bold text-white" style="color: white !important;">${u.user}</p>
-                            <span class="role-badge ${badgeClass}">${roleName}</span>
-                        </div>
-                        ${u.user !== 'admin' ? 
-                            `<button onclick="deleteUser(${i})" class="text-red-500 hover:text-red-400 px-2"><i class="fas fa-trash-alt"></i></button>` 
-                            : '<i class="fas fa-lock text-slate-600 px-2"></i>'}
-                    </div>`;
-            }).join('');
+            list.innerHTML = users.map((u, i) => `
+                <div class="bg-black/40 p-3 rounded-lg flex justify-between items-center border border-white/10 mb-2">
+                    <div class="text-left">
+                        <p class="text-sm font-bold text-white">${u.user}</p>
+                        <span class="role-badge ${u.role?.includes('Responsable') ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}">${u.role || 'Membre'}</span>
+                    </div>
+                    ${u.user !== 'admin' ? 
+                        `<button onclick="deleteUser(${i})" class="text-red-500"><i class="fas fa-trash-alt"></i></button>` 
+                        : '<i class="fas fa-lock text-slate-600"></i>'}
+                </div>`).join('');
         }
 
-        function createUser() {
+        async function createUser() {
             const u = document.getElementById('new-user').value.trim();
             const p = document.getElementById('new-pass').value.trim();
             const r = document.getElementById('new-role').value;
-
-            if(u === "" || p === "") {
-                alert("Veuillez remplir tous les champs !");
-                return;
-            }
-
+            if(!u || !p) return alert("Champs vides !");
+            
             users.push({ user: u, pass: p, role: r });
-            localStorage.setItem('doj_users', JSON.stringify(users));
+            renderUserList();
+            await saveUsersToCloud();
             
             document.getElementById('new-user').value = "";
             document.getElementById('new-pass').value = "";
-            renderUserList();
-            alert("Compte créé avec succès !");
+            alert("Accès créé pour tout le monde !");
         }
 
-        function deleteUser(index) {
-            if(users[index].user === "admin") return alert("Impossible de supprimer l'admin racine.");
+        async function deleteUser(index) {
             if(confirm("Supprimer cet accès ?")) {
                 users.splice(index, 1);
-                localStorage.setItem('doj_users', JSON.stringify(users));
                 renderUserList();
+                await saveUsersToCloud();
             }
         }
 
+        function toggleAdminModal(show) { document.getElementById('admin-modal').classList.toggle('hidden', !show); }
+        
         function openTab(evt, tabName) {
             let contents = document.getElementsByClassName("tab-content");
             for (let c of contents) c.classList.remove("active");
