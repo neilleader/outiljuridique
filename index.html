@@ -3,275 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOJ - Système Intégral</title>
+    <title>DOJ - Terminal Judiciaire</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a237e; --accent: #304ffe; --bg: #0f172a; --text: #f8fafc; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; }
-        .login-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .tab-btn { padding: 12px 20px; background: #334155; color: white; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: bold; transition: 0.3s; text-transform: uppercase; font-size: 11px; border: none; }
-        .tab-btn.active { background-color: var(--accent); border-bottom: 3px solid white; }
-        .tab-content { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        :root { --accent: #3b82f6; --bg: #030712; --sidebar: #0f172a; }
+        body { background-color: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; }
+
+        /* Effet de Verre */
+        .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* Sidebar */
+        .nav-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border-left: 4px solid transparent; }
+        .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left-color: var(--accent); color: white; }
+        .nav-item:hover:not(.active) { background: rgba(255, 255, 255, 0.03); padding-left: 1.5rem; }
+
+        /* Contenu Animé */
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        .card { background: #334155; padding: 15px; border-radius: 8px; text-decoration: none; color: white; border: 1px solid transparent; transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { background: #475569; border-color: var(--accent); transform: translateY(-2px); }
-        .card span { font-size: 11px; color: #94a3b8; margin-bottom: 5px; }
-        .card strong { color: #60a5fa; font-size: 15px; }
-        input, select { background: #0f172a !important; border: 1px solid #334155 !important; color: white !important; outline: none; }
-        .modal-bg { background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); }
-        .role-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; margin-top: 4px; display: inline-block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        /* Input */
+        .field { background: #1e293b; border: 1px solid #334155; transition: 0.3s; }
+        .field:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); outline: none; }
     </style>
 </head>
-<body>
+<body class="h-screen flex">
 
-    <div id="login-screen" class="fixed inset-0 z-[9999] bg-[#020617] flex items-center justify-center">
-        <div class="login-card p-10 rounded-3xl w-full max-w-md text-center shadow-2xl">
-            <h2 class="text-3xl font-black mb-6 tracking-tighter uppercase italic text-white">DOJ ACCESS</h2>
-            <div class="space-y-4 text-left">
-                <input type="text" id="username" placeholder="Identifiant" class="w-full p-4 rounded-xl border border-white/10">
-                <input type="password" id="password" placeholder="Mot de passe" class="w-full p-4 rounded-xl border border-white/10">
-                <button onclick="checkLogin()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-500 transition-all text-white shadow-lg uppercase">Se Connecter</button>
-                <p id="login-error" class="text-red-400 text-xs font-bold hidden text-center mt-2">Identifiants incorrects ou chargement...</p>
+    <div id="login-screen" class="fixed inset-0 z-[100] bg-[#020617] flex items-center justify-center p-6">
+        <div class="glass max-w-md w-full p-10 rounded-[2.5rem] shadow-2xl border border-white/10">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-600 rounded-3xl mb-4 shadow-xl shadow-blue-500/20">
+                    <i class="fas fa-shield-halved text-3xl text-white"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tighter uppercase">Justice OS</h1>
+                <p class="text-slate-500 text-xs font-semibold tracking-[0.2em] uppercase mt-2">Accès restreint au personnel</p>
+            </div>
+            <div class="space-y-4">
+                <input type="text" id="username" placeholder="Identifiant" class="field w-full p-4 rounded-2xl text-sm">
+                <input type="password" id="password" placeholder="Mot de passe" class="field w-full p-4 rounded-2xl text-sm">
+                <button onclick="checkLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-blue-600/30">Authentification</button>
+                <p id="login-error" class="text-red-400 text-[10px] font-bold uppercase text-center hidden">Accès refusé : Identifiants invalides</p>
             </div>
         </div>
     </div>
 
-    <div id="main-app" class="w-full max-w-6xl mx-auto p-5 hidden">
-        <div class="bg-[#1e293b] rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
-            <header class="bg-gradient-to-r from-[#1a237e] to-[#304ffe] p-6 flex justify-between items-center text-white">
-                <div>
-                    <h1 class="text-xl font-black tracking-tighter uppercase">Département de la Justice</h1>
-                    <p id="user-display" class="text-[10px] text-blue-200 uppercase font-bold mt-1 tracking-widest"></p>
+    <aside id="sidebar" class="w-72 bg-[#0f172a] border-r border-white/5 flex flex-col hidden">
+        <div class="p-8">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i class="fas fa-gavel text-xs"></i>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button id="admin-btn" onclick="toggleAdminModal(true)" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-xs font-bold border border-white/20 hidden">
-                        <i class="fas fa-users-cog mr-2"></i> GESTION
-                    </button>
-                    <button onclick="location.reload()" class="text-white/50 hover:text-white"><i class="fas fa-power-off"></i></button>
-                </div>
-            </header>
-
-            <div class="flex bg-black/20 p-2 gap-2 border-b border-white/5 overflow-x-auto">
-                <button class="tab-btn active" onclick="openTab(event, 'lexique')">Lexique & Procédure</button>
-                <button class="tab-btn" onclick="openTab(event, 'assistant')">Assistant Juridique</button>
-                <button class="tab-btn" onclick="openTab(event, 'juge')">Juge</button>
-                <button class="tab-btn" onclick="openTab(event, 'procureur')">Procureur</button>
-                <button id="tab-btn-em" class="tab-btn hidden bg-red-900/40" onclick="openTab(event, 'etat-major')">⚠️ État-Major</button>
+                <span class="font-black text-xl tracking-tighter uppercase">DOJ</span>
             </div>
 
+            <nav class="space-y-1">
+                <div class="nav-item active flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'lexique')">
+                    <i class="fas fa-book-open w-5"></i> <span class="text-sm font-semibold">Outil Juridique</span>
+                </div>
+                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'assistant')">
+                    <i class="fas fa-user-tie w-55"></i> <span class="text-sm font-semibold">Espace Greffier</span>
+                </div>
+                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'juge')">
+                    <i class="fas fa-user-tie w-55"></i> <span class="text-sm font-semibold">Espace Procureur</span>
+                </div>
+                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'procureur')">
+                    <i class="fas fa-user-tie w-5"></i> <span class="text-sm font-semibold">Espace Juge</span>
+                </div>
+                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'procureur')">
+                    <i class="fas fa-file-signature w-5"></i> <span class="text-sm font-semibold">Document Officiel</span>
+                </div>
+                <div id="tab-btn-em" class="nav-item hidden flex items-center gap-4 p-4 rounded-xl text-red-400" onclick="openTab(this, 'etat-major')">
+                    <i class="fas fa-crown w-5"></i> <span class="text-sm font-semibold">Direction</span>
+                </div>
+            </nav>
+        </div>
+
+        <div class="mt-auto p-6 border-t border-white/5 bg-black/20">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-white/10">
+                    <i class="fas fa-user-shield text-blue-400"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <p id="user-display" class="text-xs font-bold truncate">Utilisateur</p>
+                    <p class="text-[9px] text-slate-500 uppercase font-black">Agent assermenté</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="admin-btn" onclick="toggleAdminModal(true)" class="hidden bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-[10px] uppercase font-bold transition-all">Gérer</button>
+                <button onclick="location.reload()" class="bg-red-500/10 hover:bg-red-500/20 text-red-500 p-2 rounded-lg text-[10px] uppercase font-bold transition-all">Déconnexion</button>
+            </div>
+        </div>
+    </aside>
+
+    <main id="main-view" class="flex-1 flex flex-col hidden overflow-hidden">
+        <header class="h-20 border-b border-white/5 flex items-center justify-between px-10 bg-[#030712]/50">
+            <h2 id="current-tab-title" class="text-xs font-black uppercase tracking-[0.3em] text-slate-500">Lexique Juridique</h2>
+            <div class="flex gap-4 items-center">
+                <div class="text-right">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase" id="live-clock">--:--:--</p>
+                </div>
+            </div>
+        </header>
+
+        <section class="flex-1 p-10 overflow-y-auto">
             <div id="lexique" class="tab-content active">
-                <div class="grid">
-                    <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas#bkmrk-chapitre-1%3A-d%C3%A9finiti" target="_blank" class="card"><span>Document</span><strong>Code Pénale</strong></a>
-            <a href="https://wiki.unityrp.io/books/le-legal/page/code-de-procedure-penale-san-andreas" target="_blank" class="card"><span>Document</span><strong>Code de Procédure Pénale </strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Document</span><strong>Outil de Justice</strong></a>
-            <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Objections</strong></a>
-            <a href="https://docs.google.com/document/d/1Y_28-YmkSnLyNLjsh1fTdKZs3oUrBl3iK-gZq9fW9oE/edit?tab=t.0#heading=h.cgjodkfafme6" target="_blank" class="card"><span>Document</span><strong>Vice de Procédure</strong></a>
-            <a href="https://www.canva.com/design/DAHCXWclYJw/ar7aQCsN0f6ezEcb_sACvw/edit?ui=e30" target="_blank" class="card"><span>Document</span><strong>Organigramme </strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/1cE6D10dM7LdSoFS5JZ7bqmdemPb1htxNW3Yd_to3rv4/edit?gid=1503228696#gid=1503228696" target="_blank" class="card"><span>Document</span><strong>Guide des Amendements</strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="card"><span>Document</span><strong>Lexique Juridique</strong></a>
-            </div></div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Code Pénal</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Consultation des articles et des peines de San Andreas.</p>
+                    </a>
+                    <a href="https://wiki.unityrp.io/books/le-legal/page/code-de-procedure-penale-san-andreas" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-file-lines text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Code de Procédure Pénal</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Règles et protocoles pour les interventions légales.</p>
+                    </a>
+                    <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-database text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Base MDT</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Accès direct au terminal de données centralisé.</p>
+                    </a>
+		   <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" 
+   target="_blank" 
+   class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group block w-full h-full text-left decoration-none"
+   style="display: block !important;">
+    
+    <div class="flex flex-col h-full">
+        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform w-fit"></i>
+        
+        <h3 class="text-xl font-bold mb-2 text-white">Outil de Justice</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Accès direct à l'ensemble des jugements</p>
+    </div>
+</a>
+		    <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Document Délivrables</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Ensemble des documents délivrés par le Palais de Justice</p>
+                    </a>
+ 		    <a href="https://www.canva.com/design/DAHCXWclYJw/ar7aQCsN0f6ezEcb_sACvw/edit?ui=e30" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Ensemble des documents délivrés par le Palais de Justice</p>
+                    </a>
+		    <a href="https://docs.google.com/spreadsheets/d/1cE6D10dM7LdSoFS5JZ7bqmdemPb1htxNW3Yd_to3rv4/edit?gid=1503228696#gid=1503228696" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Guide des Amendements</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Répertoire des Actes Judiciaires</p>
+                    </a>
+		    <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Objections</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Protocole d'Opposition</p>
+                    </a>
+	
+
                 </div>
             </div>
 
             <div id="assistant" class="tab-content">
-                <div class="grid">
-                    <a href="https://www.canva.com/design/DAHCX5mCuOM/iU29BH_bh1aGuqU0KURzhQ/edit" target="_blank" class="card"><span>Outil</span><strong>Fiche de poste simplifiée</strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice</strong></a>
-            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
-            <a href="https://docs.google.com/document/d/1Zzruk73LG-6lrp4MbiZQaj9JYWrmm_v4-W2aCshTp1M/edit?tab=t.0" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
-            <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="card"><span>Outil</span><strong>Documents Délivrables</strong></a>
+                <div class="max-w-4xl glass p-10 rounded-[2.5rem] border-dashed border-white/10 flex flex-col items-center justify-center text-center">
+                    <i class="fas fa-folder-open text-5xl text-slate-700 mb-6"></i>
+                    <h2 class="text-2xl font-bold">Archives du Greffe</h2>
+                    <p class="text-slate-500 mt-2">Aucun dossier en attente de traitement pour le moment.</p>
                 </div>
             </div>
+            
+            <div id="juge" class="tab-content text-slate-500">Interface Juge en attente de configuration...</div>
+            <div id="procureur" class="tab-content text-slate-500">Interface Parquet en attente de configuration...</div>
+            <div id="etat-major" class="tab-content text-slate-500">Contrôle de Direction activé.</div>
+        </section>
+    </main>
 
-            <div id="juge" class="tab-content">
-                <div class="grid">
-                    <a href="https://docs.google.com/document/d/185W3j0ThS_qIMNaaPaXgubJHjvzasazYlbtUPEOevsM/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
-            <a href="https://docs.google.com/document/d/11yasvo4Ay3gDhRm52bo__ggf59QyKEOocu4_Afbtzng/edit?tab=t.0" target="_blank" class="card"><span>Mandat</span><strong>Cérémonie de Serment</strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice</strong></a>
-            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
-            <a href="https://docs.google.com/document/d/1rAqrd0nhTpcEJkHRRJnNg98S0CgJ8L_825UO4dWjIZI" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
-            <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="card"><span>Outil</span><strong>Documents Délivrables</strong></a>
-            <a href="https://www.canva.com/design/DAHCYb7ubqw/twE0EGF9sPZCC9C6QjvwyA/edit" target="_blank" class="card"><span>Outil</span><strong>Condamnation à une peine fédérale</strong></a>
-            <a href="https://www.canva.com/design/DAHCYj8yQ9o/fGsQvnSQESZOVv9zxBEg0w/edit" target="_blank" class="card"><span>Outil</span><strong>Restitution des saisies</strong></a>
-            <a href="https://www.canva.com/design/DAHCYvAeeIE/cfpie_4KkgV8VifkoWG-1Q/edit" target="_blank" class="card"><span>Outil</span><strong>Attestation de Vice de Procédure</strong></a>
-            <a href="https://www.canva.com/design/DAHCYfwI8jE/rGm51u4jbWNRTJvjSQ_YkQ/edit?ui=e30" target="_blank" class="card"><span>Document</span><strong>Autorisation de Mise en Psychatrie</strong></a>
-            <a href="https://www.canva.com/design/DAHCYkDW-TM/FtBZaAifVwZf_Tl0U_SPtg/edit" target="_blank" class="card"><span>Document</span><strong>Suivi Psychologique</strong></a>
-            <a href="https://www.canva.com/design/DAHCavQhVfg/tAgiFQeCWklxZJQ_Id-1pA/edit" target="_blank" class="card"><span>Document</span><strong>Mandat D'arrêt</strong></a>
-            <a href="https://www.canva.com/design/DAHCYZTuvZQ/rPXXnqKp3xy3JX-KazWnHQ/edit" target="_blank" class="card"><span>Document</span><strong>Mandat de Perquisition</strong></a>
-            <a href="https://www.canva.com/design/DAHCYXkQF94/X2_iAzbrvbMasNaG9-Thvw/edit" target="_blank" class="card"><span>Document</span><strong>Mandat d'Intervention</strong></a>        
-            <a href="https://www.canva.com/design/DAHCaiYg6F8/LqL-jiy3Y1KN5DMKOxqC7A/edit" target="_blank" class="card"><span>Document</span><strong>Ordre de Réquisition Judiciaire</strong></a>
-            <a href="https://www.canva.com/design/DAHCajoIDNk/VA7VEyS4KjY6GZYVstqngA/edit" target="_blank" class="card"><span>Document</span><strong>Prolongation de GAV</strong></a>
-            <a href="https://www.canva.com/design/DAHCYZ0QCZ8/viEoRrdImUPcaQce2qKS1Q/edit" target="_blank" class="card"><span>Document</span><strong>Accord à Alamiable</strong></a>
-            <a href="https://www.canva.com/design/DAHCah19d9M/LIq1p9abnDtbLP7vF9TcxQ/edit" target="_blank" class="card"><span>Document</span><strong>Destitution temporaire de fonction</strong></a>
-                </div>
+    <div id="admin-modal" class="fixed inset-0 z-[200] bg-black/90 hidden flex items-center justify-center p-6">
+        <div class="glass w-full max-w-4xl p-10 rounded-[3rem] shadow-3xl">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Gestion du Personnel</h2>
+                <button onclick="toggleAdminModal(false)" class="w-12 h-12 rounded-full bg-white/5 hover:bg-red-500/20 text-white transition-all">&times;</button>
             </div>
-
-            <div id="procureur" class="tab-content">
-                <div class="grid">
-                    <a href="https://docs.google.com/document/d/1zds28a_1AS0aE1xf5C-eRODnHnd9pTKXQiFoU_qnwpo/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Fiche de Poste</strong></a>
-            <a href="https://www.canva.com/design/DAHCah19d9M/LIq1p9abnDtbLP7vF9TcxQ/edit" target="_blank" class="card"><span>Contact</span><strong>Fiche de Poste Simplifiée</strong></a>
-            <a href="https://docs.google.com/document/d/1WksY2JmDok8Eyu8vUnvx864_CBdqRxQo9ao-L5JbjMw/edit?tab=t.0" target="_blank" class="card"><span>Contact</span><strong>Céremonie de Serment</strong></a>
-            <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="card"><span>Outil</span><strong>Outil de Justice </strong></a>
-            <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="card"><span>Outil</span><strong>MDT</strong></a>
-            <a href="https://docs.google.com/document/d/1rAqrd0nhTpcEJkHRRJnNg98S0CgJ8L_825UO4dWjIZI" target="_blank" class="card"><span>Outil</span><strong>Notes MDT</strong></a>
-            <a href="https://docs.google.com/document/d/1EV536tSa8z4Bp01enlf4b_lAs5MxLPgQtQURSC2iA3o/edit?tab=t.0" target="_blank" class="card"><span>Document</span><strong>Entretien des Plaintes</strong></a>
-                </div>
-            </div>
-
-            <div id="etat-major" class="tab-content">
-                <h2 class="text-red-500 font-black mb-4 uppercase">Espace Direction</h2>
-                <div class="grid">
-                    <a href="#" class="card border-red-500/30"><span>Privé</span><strong>Registre Sanctions</strong></a>
-                    <a href="#" class="card border-red-500/30"><span>Privé</span><strong>Promotions</strong></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="admin-modal" class="modal-bg fixed inset-0 z-[10000] hidden flex items-center justify-center p-4">
-        <div class="bg-[#1e293b] w-full max-w-4xl rounded-3xl border border-white/10 shadow-2xl p-8 text-white text-left">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest">Administration des Accès</h2>
-                <button onclick="toggleAdminModal(false)" class="text-2xl text-slate-400 hover:text-white">&times;</button>
-            </div>
-            <div class="grid md:grid-cols-2 gap-10">
+            <div class="grid md:grid-cols-2 gap-12">
                 <div class="space-y-4">
-                    <h3 class="text-xs font-bold text-blue-400 uppercase">Ajouter un Membre</h3>
-                    <input type="text" id="new-user" placeholder="Identifiant" class="w-full p-3 rounded-xl">
-                    <input type="password" id="new-pass" placeholder="Mot de passe" class="w-full p-3 rounded-xl">
-                    <select id="new-role" class="w-full p-3 rounded-xl">
+                    <p class="text-[10px] font-black uppercase text-blue-500 tracking-widest">Enregistrer un Agent</p>
+                    <input type="text" id="new-user" placeholder="Nom complet" class="field w-full p-4 rounded-xl">
+                    <input type="password" id="new-pass" placeholder="Clé d'accès" class="field w-full p-4 rounded-xl">
+                    <select id="new-role" class="field w-full p-4 rounded-xl">
                         <option value="Assistant Juridique">Assistant Juridique</option>
+                        <option value="Greffier">Greffier</option>
                         <option value="Juge">Juge</option>
                         <option value="Procureur">Procureur</option>
-                        <option value="Juge en chef">Juge en chef</option>
-                        <option value="Proc en chef">Proc en chef</option>
-                        <option value="Responsable justice">Responsable justice</option>
-                        <option value="Directeur">Directeur</option>
+                        <option value="Juge">Juge</option>
+                        <option value="Greffier en Chef">Greffier en Chef</option> 
+                        <option value="Procureur Général">Procureur Général</option>
+                        <option value="Juge en Chef">Juge en Chef</option>
+                        <option value="Responsable Justice Adjoint">Responsable Justice Adjoint</option>
+                        <option value="Responsable Justice">Responsable Justice</option>
+                        <option value="Directeur">Direction Générale</option>
                     </select>
-                    <button onclick="createUser()" class="w-full bg-emerald-600 p-3 rounded-xl font-bold uppercase hover:bg-emerald-500 transition-colors">Créer le compte</button>
+                    <button onclick="createUser()" class="w-full bg-emerald-600 p-4 rounded-xl font-bold uppercase text-xs shadow-lg shadow-emerald-600/20">Créer l'accès</button>
                 </div>
-                <div>
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-4">Membres Actifs</h3>
-                    <div id="user-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+                <div class="flex flex-col">
+                    <p class="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-4">Agents Actifs</p>
+                    <div id="user-list" class="space-y-2 overflow-y-auto max-h-[300px] pr-4"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION DU CLOUD (JSONBIN)
         const BIN_ID = "69bbb558c3097a1dd53bc37b"; 
-        const API_KEY = "$2a$10$ZL6gJ9Al7JzcquZOqKWpr.HMCZuy8DHvAGQs614CinXvOBlvarsPW"; // <--- CHANGE CECI AVEC TA MASTER KEY !
+        const API_KEY = "$2a$10$ZL6gJ9Al7JzcquZOqKWpr.HMCZuy8DHvAGQs614CinXvOBlvarsPW";
         const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-
         let users = [];
-        let currentUser = null;
 
-        // Charger les utilisateurs au lancement
         async function loadUsers() {
             try {
-                const response = await fetch(`${URL}/latest`, {
-                    headers: { "X-Master-Key": API_KEY }
-                });
-                const data = await response.json();
-                users = data.record;
-            } catch (err) {
-                console.error("Erreur cloud, chargement local par défaut...");
-                users = [{ user: "admin", pass: "1234", role: "Responsable justice" }];
-            }
+                const res = await fetch(`${URL}/latest`, { headers: { "X-Master-Key": API_KEY } });
+                const data = await res.json();
+                users = data.record || [];
+            } catch (e) { users = [{ user: "admin", pass: "1241", role: "Directeur" }]; }
         }
         loadUsers();
-
-        // Sauvegarder les utilisateurs sur le cloud
-        async function saveUsersToCloud() {
-            try {
-                await fetch(URL, {
-                    method: 'PUT',
-                    headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-                    body: JSON.stringify(users)
-                });
-            } catch (err) { alert("Erreur de connexion au serveur !"); }
-        }
 
         function checkLogin() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value.trim();
             const found = users.find(x => x.user === u && x.pass === p);
             if(found) {
-                currentUser = found;
                 document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                setupPermissions();
-            } else { 
-                document.getElementById('login-error').classList.remove('hidden'); 
-            }
+                document.getElementById('sidebar').classList.remove('hidden');
+                document.getElementById('main-view').classList.remove('hidden');
+                document.getElementById('user-display').innerText = found.user;
+                if (found.role === "Directeur" || found.user === "admin") {
+                    document.getElementById('admin-btn').classList.remove('hidden');
+                    document.getElementById('tab-btn-em').classList.remove('hidden');
+                }
+                renderUserList();
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
-        function setupPermissions() {
-            document.getElementById('user-display').innerText = `${currentUser.user} | ${currentUser.role}`;
-            const rolesEM = ["Directeur", "Responsable justice", "Juge en chef", "Proc en chef"];
-            const rolesAdmin = ["Responsable justice", "Directeur"];
-            
-            if (currentUser.user === "admin" || rolesAdmin.includes(currentUser.role)) {
-                document.getElementById('admin-btn').classList.remove('hidden');
-            }
-            if (currentUser.user === "admin" || rolesEM.includes(currentUser.role)) {
-                document.getElementById('tab-btn-em').classList.remove('hidden');
-            }
-            renderUserList();
+        function openTab(el, tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            el.classList.add('active');
+            document.getElementById('current-tab-title').innerText = el.querySelector('span').innerText;
         }
 
         function renderUserList() {
             const list = document.getElementById('user-list');
-            if (!list) return;
             list.innerHTML = users.map((u, i) => `
-                <div class="bg-black/40 p-3 rounded-lg flex justify-between items-center border border-white/10 mb-2">
-                    <div class="text-left">
-                        <p class="text-sm font-bold text-white">${u.user}</p>
-                        <span class="role-badge ${u.role?.includes('Responsable') ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}">${u.role || 'Membre'}</span>
-                    </div>
-                    ${u.user !== 'admin' ? 
-                        `<button onclick="deleteUser(${i})" class="text-red-500"><i class="fas fa-trash-alt"></i></button>` 
-                        : '<i class="fas fa-lock text-slate-600"></i>'}
-                </div>`).join('');
+                <div class="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
+                    <div class="flex flex-col"><span class="text-sm font-bold">${u.user}</span><span class="text-[9px] uppercase text-blue-400 font-bold">${u.role}</span></div>
+                    ${u.user !== 'admin' ? `<button onclick="deleteUser(${i})" class="text-red-500 hover:scale-110 transition-transform"><i class="fas fa-trash"></i></button>` : ''}
+                </div>
+            `).join('');
         }
 
         async function createUser() {
-            const u = document.getElementById('new-user').value.trim();
-            const p = document.getElementById('new-pass').value.trim();
+            const u = document.getElementById('new-user').value;
+            const p = document.getElementById('new-pass').value;
             const r = document.getElementById('new-role').value;
-            if(!u || !p) return alert("Champs vides !");
-            
+            if(!u || !p) return;
             users.push({ user: u, pass: p, role: r });
+            await fetch(URL, { method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(users) });
             renderUserList();
-            await saveUsersToCloud();
-            
-            document.getElementById('new-user').value = "";
-            document.getElementById('new-pass').value = "";
-            alert("Accès créé pour tout le monde !");
+            document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
         }
 
-        async function deleteUser(index) {
-            if(confirm("Supprimer cet accès ?")) {
-                users.splice(index, 1);
-                renderUserList();
-                await saveUsersToCloud();
-            }
+        async function deleteUser(i) {
+            if(confirm("Révoquer cet accès ?")) { users.splice(i, 1); renderUserList(); await fetch(URL, { method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(users) }); }
         }
 
         function toggleAdminModal(show) { document.getElementById('admin-modal').classList.toggle('hidden', !show); }
         
-        function openTab(evt, tabName) {
-            let contents = document.getElementsByClassName("tab-content");
-            for (let c of contents) c.classList.remove("active");
-            let btns = document.getElementsByClassName("tab-btn");
-            for (let b of btns) b.classList.remove("active");
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('fr-FR');
+        }, 1000);
     </script>
 </body>
 </html>
