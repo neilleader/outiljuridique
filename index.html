@@ -3,214 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOJ - Terminal Judiciaire</title>
+    <title>Palais de Justice - Terminal Judiciaire</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        
         :root { --accent: #3b82f6; --bg: #030712; --sidebar: #0f172a; }
-        body { background-color: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; }
-
-        /* Effet de Verre */
+        body { background-color: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; margin: 0; }
         .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        /* Sidebar */
-        .nav-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border-left: 4px solid transparent; }
+        .nav-item { transition: all 0.3s ease; cursor: pointer; border-left: 4px solid transparent; color: #94a3b8; }
         .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left-color: var(--accent); color: white; }
-        .nav-item:hover:not(.active) { background: rgba(255, 255, 255, 0.03); padding-left: 1.5rem; }
-
-        /* Contenu Animé */
-        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
+        .nav-item:hover:not(.active) { background: rgba(255, 255, 255, 0.03); color: white; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; height: 100%; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        /* Input */
-        .field { background: #1e293b; border: 1px solid #334155; transition: 0.3s; }
-        .field:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); outline: none; }
+        .field { background: #1e293b; border: 1px solid #334155; color: white; transition: 0.3s; }
+        .field:focus { border-color: var(--accent); outline: none; }
     </style>
 </head>
-<body class="h-screen flex">
+<body class="flex h-screen w-screen">
 
     <div id="login-screen" class="fixed inset-0 z-[100] bg-[#020617] flex items-center justify-center p-6">
-        <div class="glass max-w-md w-full p-10 rounded-[2.5rem] shadow-2xl border border-white/10">
-            <div class="text-center mb-10">
+        <div class="glass max-w-md w-full p-10 rounded-[2.5rem] text-center border border-white/10 shadow-2xl">
+            <div class="mb-10">
                 <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-600 rounded-3xl mb-4 shadow-xl shadow-blue-500/20">
                     <i class="fas fa-shield-halved text-3xl text-white"></i>
                 </div>
-                <h1 class="text-3xl font-extrabold tracking-tighter uppercase">Justice OS</h1>
-                <p class="text-slate-500 text-xs font-semibold tracking-[0.2em] uppercase mt-2">Accès restreint au personnel</p>
+                <h1 class="text-3xl font-extrabold tracking-tighter uppercase text-white">Justice OS</h1>
+                <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-2">Accès Sécurisé - Personnel Autorisé</p>
             </div>
             <div class="space-y-4">
                 <input type="text" id="username" placeholder="Identifiant" class="field w-full p-4 rounded-2xl text-sm">
                 <input type="password" id="password" placeholder="Mot de passe" class="field w-full p-4 rounded-2xl text-sm">
-                <button onclick="checkLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-blue-600/30">Authentification</button>
-                <p id="login-error" class="text-red-400 text-[10px] font-bold uppercase text-center hidden">Accès refusé : Identifiants invalides</p>
+                <button onclick="checkLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-2xl font-bold uppercase tracking-widest text-xs text-white transition-all shadow-lg shadow-blue-600/20">Authentification</button>
+                <p id="login-error" class="text-red-400 text-[10px] font-bold uppercase hidden">Erreur d'identification</p>
             </div>
         </div>
     </div>
 
-    <aside id="sidebar" class="w-72 bg-[#0f172a] border-r border-white/5 flex flex-col hidden">
+    <aside id="sidebar" class="w-72 bg-[#0f172a] border-r border-white/5 flex flex-col hidden h-full flex-shrink-0">
         <div class="p-8">
             <div class="flex items-center gap-3 mb-10">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20 text-white">
                     <i class="fas fa-gavel text-xs"></i>
                 </div>
-                <span class="font-black text-xl tracking-tighter uppercase">DOJ</span>
+                <span class="font-black text-xl uppercase leading-tight text-white">Palais de Justice</span>
             </div>
-
-            <nav class="space-y-1">
-                <div class="nav-item active flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'lexique')">
-                    <i class="fas fa-book-open w-5"></i> <span class="text-sm font-semibold">Outil Juridique</span>
-                </div>
-                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'assistant')">
-                    <i class="fas fa-user-tie w-55"></i> <span class="text-sm font-semibold">Espace Greffier</span>
-                </div>
-                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'juge')">
-                    <i class="fas fa-user-tie w-55"></i> <span class="text-sm font-semibold">Espace Procureur</span>
-                </div>
-                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'procureur')">
-                    <i class="fas fa-user-tie w-5"></i> <span class="text-sm font-semibold">Espace Juge</span>
-                </div>
-                <div class="nav-item flex items-center gap-4 p-4 rounded-xl text-slate-400" onclick="openTab(this, 'procureur')">
-                    <i class="fas fa-file-signature w-5"></i> <span class="text-sm font-semibold">Document Officiel</span>
-                </div>
-                <div id="tab-btn-em" class="nav-item hidden flex items-center gap-4 p-4 rounded-xl text-red-400" onclick="openTab(this, 'etat-major')">
-                    <i class="fas fa-crown w-5"></i> <span class="text-sm font-semibold">Direction</span>
-                </div>
-            </nav>
         </div>
 
-        <div class="mt-auto p-6 border-t border-white/5 bg-black/20">
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+            <div class="nav-item active flex items-center gap-4 p-4 rounded-xl" onclick="openTab(this, 'lexique')">
+                <i class="fas fa-scale-balanced w-5"></i> <span class="text-sm font-semibold">Outil Juridique</span>
+            </div>
+            <div class="nav-item flex items-center gap-4 p-4 rounded-xl" onclick="openTab(this, 'assistant')">
+                <i class="fas fa-address-card w-5"></i> <span class="text-sm font-semibold">Espace Greffier</span>
+            </div>
+            <div class="nav-item flex items-center gap-4 p-4 rounded-xl" onclick="openTab(this, 'procureur')">
+                <i class="fas fa-user-tie w-5"></i> <span class="text-sm font-semibold">Espace Procureur</span>
+            </div>
+            <div class="nav-item flex items-center gap-4 p-4 rounded-xl" onclick="openTab(this, 'juge')">
+                <i class="fas fa-hammer w-5"></i> <span class="text-sm font-semibold">Espace Juge</span>
+            </div>
+            <div id="tab-btn-em" class="nav-item hidden flex items-center gap-4 p-4 rounded-xl text-red-400 border-red-500/20" onclick="openTab(this, 'etat-major')">
+                <i class="fas fa-crown w-5"></i> <span class="text-sm font-semibold">Direction</span>
+            </div>
+        </nav>
+
+        <div class="p-6 bg-black/40 border-t border-white/10 shrink-0">
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-white/10">
-                    <i class="fas fa-user-shield text-blue-400"></i>
+                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-white/10 text-blue-400">
+                    <i class="fas fa-user-shield"></i>
                 </div>
-                <div class="overflow-hidden">
-                    <p id="user-display" class="text-xs font-bold truncate">Utilisateur</p>
-                    <p class="text-[9px] text-slate-500 uppercase font-black">Agent assermenté</p>
+                <div class="min-w-0">
+                    <p id="user-display" class="text-xs font-bold truncate text-white">Utilisateur</p>
+                    <p id="role-display" class="text-[9px] text-slate-500 uppercase font-black tracking-tighter">Grade</p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-                <button id="admin-btn" onclick="toggleAdminModal(true)" class="hidden bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-[10px] uppercase font-bold transition-all">Gérer</button>
-                <button onclick="location.reload()" class="bg-red-500/10 hover:bg-red-500/20 text-red-500 p-2 rounded-lg text-[10px] uppercase font-bold transition-all">Déconnexion</button>
+            <div class="flex flex-col gap-2">
+                <button id="admin-btn" onclick="toggleAdminModal(true)" class="hidden w-full bg-slate-800 hover:bg-slate-700 p-2.5 rounded-xl text-[10px] uppercase font-bold text-white transition-all border border-white/5">
+                    <i class="fas fa-cog mr-2"></i>Gérer les accès
+                </button>
+                <button onclick="logout()" class="w-full bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white p-2.5 rounded-xl text-[10px] uppercase font-bold transition-all border border-red-500/30">
+                    <i class="fas fa-power-off mr-2"></i>Déconnexion
+                </button>
             </div>
         </div>
     </aside>
 
     <main id="main-view" class="flex-1 flex flex-col hidden overflow-hidden">
         <header class="h-20 border-b border-white/5 flex items-center justify-between px-10 bg-[#030712]/50">
-            <h2 id="current-tab-title" class="text-xs font-black uppercase tracking-[0.3em] text-slate-500">Lexique Juridique</h2>
-            <div class="flex gap-4 items-center">
-                <div class="text-right">
-                    <p class="text-[10px] text-slate-500 font-bold uppercase" id="live-clock">--:--:--</p>
-                </div>
+            <h2 id="current-tab-title" class="text-xs font-black uppercase tracking-[0.3em] text-slate-500">Outil Juridique</h2>
+            <div class="flex items-center gap-4">
+                <div class="h-8 w-[1px] bg-white/5"></div>
+                <p class="text-[11px] text-slate-400 font-mono" id="live-clock">00:00:00</p>
             </div>
         </header>
 
         <section class="flex-1 p-10 overflow-y-auto">
+            
             <div id="lexique" class="tab-content active">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <a href="https://wiki.unityrp.io/books/le-legal/page/code-penal-san-andreas" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
                         <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
                         <h3 class="text-xl font-bold mb-2">Code Pénal</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Consultation des articles et des peines de San Andreas.</p>
+                        <p class="text-slate-400 text-sm">Articles et peines de San Andreas.</p>
                     </a>
                     <a href="https://wiki.unityrp.io/books/le-legal/page/code-de-procedure-penale-san-andreas" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
                         <i class="fas fa-file-lines text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-xl font-bold mb-2">Code de Procédure Pénal</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Règles et protocoles pour les interventions légales.</p>
+                        <h3 class="text-xl font-bold mb-2">Procédure Pénale</h3>
+                        <p class="text-slate-400 text-sm">Protocoles d'interventions légales.</p>
                     </a>
                     <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
                         <i class="fas fa-database text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
                         <h3 class="text-xl font-bold mb-2">Base MDT</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Accès direct au terminal de données centralisé.</p>
+                        <p class="text-slate-400 text-sm">Accès terminal centralisé.</p>
                     </a>
-		   <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" 
-   target="_blank" 
-   class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group block w-full h-full text-left decoration-none"
-   style="display: block !important;">
-    
-    <div class="flex flex-col h-full">
-        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform w-fit"></i>
-        
-        <h3 class="text-xl font-bold mb-2 text-white">Outil de Justice</h3>
-        <p class="text-slate-400 text-sm leading-relaxed">Accès direct à l'ensemble des jugements</p>
-    </div>
-</a>
-		    <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-xl font-bold mb-2">Document Délivrables</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Ensemble des documents délivrés par le Palais de Justice</p>
+                    <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-scale-balanced text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Outil de Justice</h3>
+                        <p class="text-slate-400 text-sm">Répertoire des jugements.</p>
                     </a>
- 		    <a href="https://www.canva.com/design/DAHCXWclYJw/ar7aQCsN0f6ezEcb_sACvw/edit?ui=e30" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
                         <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Ensemble des documents délivrés par le Palais de Justice</p>
+                        <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
                     </a>
-		    <a href="https://docs.google.com/spreadsheets/d/1cE6D10dM7LdSoFS5JZ7bqmdemPb1htxNW3Yd_to3rv4/edit?gid=1503228696#gid=1503228696" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-xl font-bold mb-2">Guide des Amendements</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Répertoire des Actes Judiciaires</p>
-                    </a>
-		    <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                        <i class="fas fa-gavel text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
                         <h3 class="text-xl font-bold mb-2">Objections</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Protocole d'Opposition</p>
+                        <p class="text-slate-400 text-sm">Protocole d'opposition.</p>
                     </a>
-	
-
                 </div>
             </div>
 
             <div id="assistant" class="tab-content">
-                <div class="max-w-4xl glass p-10 rounded-[2.5rem] border-dashed border-white/10 flex flex-col items-center justify-center text-center">
-                    <i class="fas fa-folder-open text-5xl text-slate-700 mb-6"></i>
-                    <h2 class="text-2xl font-bold">Archives du Greffe</h2>
-                    <p class="text-slate-500 mt-2">Aucun dossier en attente de traitement pour le moment.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-scale-balanced text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Outil de Justice</h3>
+                        <p class="text-slate-400 text-sm">Répertoire des jugements.</p>
+                    </a>
+                    <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-database text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Base MDT</h3>
+                        <p class="text-slate-400 text-sm">Accès terminal centralisé.</p>
+                    </a>
+                    <a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
+                        <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
+                    <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Objections</h3>
+                        <p class="text-slate-400 text-sm">Protocole d'opposition.</p>
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Lexique Juridique</h3>
+                        <p class="text-slate-400 text-sm">Dictionnaire Juridique</p>
+                    </a>
+                    <a href="https://www.canva.com/design/DAHCYb7ubqw/twE0EGF9sPZCC9C6QjvwyA/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Condamnation a une peine fédérale</h3>
+                        <p class="text-slate-400 text-sm">Document de mise en prison</p>
+                    </a> 
+                    <a href="https://www.canva.com/design/DAHCYj8yQ9o/fGsQvnSQESZOVv9zxBEg0w/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Restitution des saisies</h3>
+                        <p class="text-slate-400 text-sm">Document de remise des saisies</p>
+                    </a>   
+                    <a href="https://www.canva.com/design/DAHCYvAeeIE/cfpie_4KkgV8VifkoWG-1Q/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Déclaration de VDP</h3>
+                        <p class="text-slate-400 text-sm">Document de déclaration d'un Vice de Procédure</p>
+                    </a>    
+                    <a href="https://www.canva.com/design/DAGoSp2otj8/uyeULaowH_erAOfPww3yXQ/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+                        <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Extrait de casier vierge</h3>
+                        <p class="text-slate-400 text-sm">Document de preuve de casier vierge</p>
+                    </a>                                      
                 </div>
             </div>
-            
-            <div id="juge" class="tab-content text-slate-500">Interface Juge en attente de configuration...</div>
-            <div id="procureur" class="tab-content text-slate-500">Interface Parquet en attente de configuration...</div>
-            <div id="etat-major" class="tab-content text-slate-500">Contrôle de Direction activé.</div>
+
+<div id="juge" class="tab-content">
+<div class="p-10 text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-scale-balanced text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Outil de Justice</h3>
+            <p class="text-slate-400 text-sm">Répertoire des jugements.</p>
+        </a>
+
+        <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-database text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Base MDT</h3>
+            <p class="text-slate-400 text-sm">Accès terminal centralisé.</p>
+        </a>
+
+        <a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
+            <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
+        </a>
+
+        <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Objections</h3>
+            <p class="text-slate-400 text-sm">Protocole d'opposition.</p>
+        </a>
+
+        <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-book text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Lexique Juridique</h3>
+            <p class="text-slate-400 text-sm">Dictionnaire Judiciaire.</p>
+        </a>
+
+        <a href="https://www.canva.com/design/DAHCYsc1NBU/HUUUhw6IQT6daYcZ3p59yw/edit" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-book text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Document délivrables</h3>
+            <p class="text-slate-400 text-sm">Ensemble des documents délivrables par les juges</p>
+        </a>
+    </div>
+</div>
+<div id="procureur" class="tab-content">
+    <div class="p-10 text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <a href="https://docs.google.com/spreadsheets/d/19lQS57DPNWK3gZEB7KFeWexwOljasIAzGvhIOWovqRA/edit?gid=768702395#gid=768702395" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-scale-balanced text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Outil de Justice</h3>
+            <p class="text-slate-400 text-sm">Répertoire des jugements.</p>
+        </a>
+        <a href="https://mdt.vauntcorp.com/#/login" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-database text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Base MDT</h3>
+            <p class="text-slate-400 text-sm">Accès terminal centralisé.</p>
+        </a>
+        <a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
+            <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1Jnz8Px3mRh_8cy8d6Cq4wKes_ub5vzeXYdpcMyrRw7E/edit?gid=0#gid=0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+            <i class="fas fa-book text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Lexique Juridique</h3>
+            <p class="text-slate-400 text-sm">Dictionnaire Judiciaire.</p>
+        </a>
+    </div>
+</div>
+
+            <div id="etat-major" class="tab-content">
+                <div class="mb-8">
+                    <h3 class="text-red-500 font-black uppercase tracking-widest text-sm mb-2">Centre de Commandement</h3>
+                    <p class="text-slate-500 text-xs">Accès restreint aux hauts magistrats et à la direction.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="https://docs.google.com/spreadsheets/d/1elauHwAgGyWfaIDT3fZz1O7ngPg3TbJQyQa2yMOpZnQ/edit?usp=sharing" target="_blank" class="glass p-8 rounded-[2rem] hover:border-red-500/50 transition-all group">
+                        <i class="fas fa-crown text-3xl text-red-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Suivi Justice</h3>
+                        <p class="text-slate-400 text-sm">Pilotage global et statistiques.</p>
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1pNkNXtSjTXI4Eon5h-Tgjbb6CuHfVw5WLUEACmS68iI/edit?usp=sharing" target="_blank" class="glass p-8 rounded-[2rem] hover:border-red-500/50 transition-all group">
+                        <i class="fas fa-graduation-cap text-3xl text-red-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Suivi Formation</h3>
+                        <p class="text-slate-400 text-sm">Gestion des carrières et examens.</p>
+                    </a>
+                     <a href="https://docs.google.com/spreadsheets/d/1lV-GTiDjubfmdQoSw7I2PqOhBCdJF5C7udr3z57UrYY/edit?usp=sharing" target="_blank" class="glass p-8 rounded-[2rem] hover:border-red-500/50 transition-all group">
+                        <i class="fas fa-graduation-cap text-3xl text-red-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Suivi Recrutement</h3>
+                        <p class="text-slate-400 text-sm">Suivi des recrutements de la justice</p>
+                    </a>
+                     <a href="https://docs.google.com/spreadsheets/d/1PMbF_SFKFKJV7dY1OC7TuPRvz8z6dQLoI7Sv6R29KAo/edit?usp=sharing" target="_blank" class="glass p-8 rounded-[2rem] hover:border-red-500/50 transition-all group">
+                        <i class="fas fa-graduation-cap text-3xl text-red-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold mb-2">Evaluation Justice</h3>
+                        <p class="text-slate-400 text-sm">Suivi des connaissance de l'effectid justice</p>
+                    </a>
+                </div>
+            </div>
         </section>
     </main>
 
-    <div id="admin-modal" class="fixed inset-0 z-[200] bg-black/90 hidden flex items-center justify-center p-6">
-        <div class="glass w-full max-w-4xl p-10 rounded-[3rem] shadow-3xl">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-black uppercase tracking-tighter">Gestion du Personnel</h2>
-                <button onclick="toggleAdminModal(false)" class="w-12 h-12 rounded-full bg-white/5 hover:bg-red-500/20 text-white transition-all">&times;</button>
+    <div id="admin-modal" class="fixed inset-0 z-[200] bg-black/95 hidden flex items-center justify-center p-6 backdrop-blur-xl">
+        <div class="glass w-full max-w-4xl p-10 rounded-[3.5rem] border border-white/10 text-white shadow-3xl">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <h2 class="text-3xl font-black uppercase tracking-tighter">Gestion Personnel</h2>
+                    <p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest">Administration des accès</p>
+                </div>
+                <button onclick="toggleAdminModal(false)" class="w-12 h-12 rounded-full bg-white/5 hover:bg-red-500/20 text-white transition-all text-3xl">&times;</button>
             </div>
+            
             <div class="grid md:grid-cols-2 gap-12">
                 <div class="space-y-4">
-                    <p class="text-[10px] font-black uppercase text-blue-500 tracking-widest">Enregistrer un Agent</p>
-                    <input type="text" id="new-user" placeholder="Nom complet" class="field w-full p-4 rounded-xl">
-                    <input type="password" id="new-pass" placeholder="Clé d'accès" class="field w-full p-4 rounded-xl">
-                    <select id="new-role" class="field w-full p-4 rounded-xl">
+                    <p class="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-2">Nouvel Agent</p>
+                    <input type="text" id="new-user" placeholder="Identifiant" class="field w-full p-4 rounded-xl text-sm">
+                    <input type="password" id="new-pass" placeholder="Mot de passe" class="field w-full p-4 rounded-xl text-sm">
+                    <select id="new-role" class="field w-full p-4 rounded-xl text-sm">
                         <option value="Assistant Juridique">Assistant Juridique</option>
                         <option value="Greffier">Greffier</option>
-                        <option value="Juge">Juge</option>
                         <option value="Procureur">Procureur</option>
                         <option value="Juge">Juge</option>
-                        <option value="Greffier en Chef">Greffier en Chef</option> 
+                        <option value="Greffier en Chef">Greffier en Chef</option>
                         <option value="Procureur Général">Procureur Général</option>
                         <option value="Juge en Chef">Juge en Chef</option>
-                        <option value="Responsable Justice Adjoint">Responsable Justice Adjoint</option>
-                        <option value="Responsable Justice">Responsable Justice</option>
-                        <option value="Directeur">Direction Générale</option>
+                        <option value="Responsable justice Adjoint">Responsable justice Adjoint</option>
+                        <option value="Responsable justice">Responsable justice</option>
+                        <option value="Directeur Adjoint">Directeur Adjoint</option>
+                        <option value="Directeur">Directeur</option>
                     </select>
-                    <button onclick="createUser()" class="w-full bg-emerald-600 p-4 rounded-xl font-bold uppercase text-xs shadow-lg shadow-emerald-600/20">Créer l'accès</button>
+                    <button onclick="createUser()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-bold uppercase text-xs transition-all shadow-lg shadow-blue-600/20">Créer l'accès</button>
                 </div>
-                <div class="flex flex-col">
-                    <p class="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-4">Agents Actifs</p>
-                    <div id="user-list" class="space-y-2 overflow-y-auto max-h-[300px] pr-4"></div>
+
+                <div class="flex flex-col h-full">
+                    <p class="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-4">Effectifs Actuels</p>
+                    <div id="user-list" class="space-y-2 overflow-y-auto max-h-[300px] pr-2 custom-scroll"></div>
                 </div>
             </div>
         </div>
@@ -222,70 +327,135 @@
         const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
         let users = [];
 
+        // CHARGEMENT INITIAL DES UTILISATEURS
         async function loadUsers() {
             try {
                 const res = await fetch(`${URL}/latest`, { headers: { "X-Master-Key": API_KEY } });
                 const data = await res.json();
                 users = data.record || [];
-            } catch (e) { users = [{ user: "admin", pass: "1241", role: "Directeur" }]; }
+                checkAutoLogin();
+            } catch (e) { 
+                users = [{ user: "admin", pass: "1241", role: "Directeur" }]; 
+                checkAutoLogin();
+            }
         }
         loadUsers();
 
+        // AUTHENTIFICATION
         function checkLogin() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value.trim();
-            const found = users.find(x => x.user === u && x.pass === p);
-            if(found) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('sidebar').classList.remove('hidden');
-                document.getElementById('main-view').classList.remove('hidden');
-                document.getElementById('user-display').innerText = found.user;
-                if (found.role === "Directeur" || found.user === "admin") {
-                    document.getElementById('admin-btn').classList.remove('hidden');
-                    document.getElementById('tab-btn-em').classList.remove('hidden');
-                }
-                renderUserList();
-            } else { document.getElementById('login-error').classList.remove('hidden'); }
+            const f = users.find(x => x.user === u && x.pass === p);
+            
+            if(f) {
+                localStorage.setItem('doj_user', u);
+                localStorage.setItem('doj_pass', p);
+                localStorage.removeItem('manual_logout');
+                showApp(f);
+            } else { 
+                document.getElementById('login-error').classList.remove('hidden'); 
+            }
         }
 
-        function openTab(el, tabName) {
+        function checkAutoLogin() {
+            if (localStorage.getItem('manual_logout') === 'true') return;
+            const u = localStorage.getItem('doj_user'), p = localStorage.getItem('doj_pass');
+            if (u && p) {
+                const f = users.find(x => x.user === u && x.pass === p);
+                if (f) showApp(f);
+            }
+        }
+
+        function showApp(f) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('main-view').classList.remove('hidden');
+            document.getElementById('user-display').innerText = f.user;
+            document.getElementById('role-display').innerText = f.role;
+
+            // DÉFINITION DES GRADES DE DIRECTION
+            const adminRoles = [
+                "Directeur", 
+                "Directeur Adjoint", 
+                "Responsable justice", 
+                "Responsable justice Adjoint",
+                "Juge en Chef",
+                "Procureur Général",
+                "Greffier en Chef"
+            ];
+
+            if (adminRoles.includes(f.role) || f.user === "admin") {
+                document.getElementById('admin-btn').classList.remove('hidden');
+                document.getElementById('tab-btn-em').classList.remove('hidden');
+            }
+            renderUserList();
+        }
+
+        function logout() {
+            localStorage.clear();
+            localStorage.setItem('manual_logout', 'true');
+            location.reload();
+        }
+
+        // NAVIGATION
+        function openTab(el, name) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+            document.getElementById(name).classList.add('active');
             el.classList.add('active');
             document.getElementById('current-tab-title').innerText = el.querySelector('span').innerText;
         }
 
+        function toggleAdminModal(s) { document.getElementById('admin-modal').classList.toggle('hidden', !s); }
+
+        // CRUD UTILISATEURS
         function renderUserList() {
-            const list = document.getElementById('user-list');
-            list.innerHTML = users.map((u, i) => `
-                <div class="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="flex flex-col"><span class="text-sm font-bold">${u.user}</span><span class="text-[9px] uppercase text-blue-400 font-bold">${u.role}</span></div>
-                    ${u.user !== 'admin' ? `<button onclick="deleteUser(${i})" class="text-red-500 hover:scale-110 transition-transform"><i class="fas fa-trash"></i></button>` : ''}
+            document.getElementById('user-list').innerHTML = users.map((u, i) => `
+                <div class="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5 group hover:bg-white/10 transition-all">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-white">${u.user}</span>
+                        <span class="text-[9px] uppercase text-blue-400 font-bold tracking-tighter">${u.role}</span>
+                    </div>
+                    ${u.user !== 'admin' ? `
+                        <button onclick="deleteUser(${i})" class="text-slate-600 hover:text-red-500 p-2 transition-colors">
+                            <i class="fas fa-trash-can"></i>
+                        </button>` : ''}
                 </div>
             `).join('');
         }
 
         async function createUser() {
-            const u = document.getElementById('new-user').value;
-            const p = document.getElementById('new-pass').value;
+            const u = document.getElementById('new-user').value.trim();
+            const p = document.getElementById('new-pass').value.trim();
             const r = document.getElementById('new-role').value;
             if(!u || !p) return;
-            users.push({ user: u, pass: p, role: r });
-            await fetch(URL, { method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(users) });
+            
+            users.push({user:u, pass:p, role:r});
+            await syncDB();
             renderUserList();
-            document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
+            document.getElementById('new-user').value = '';
+            document.getElementById('new-pass').value = '';
         }
 
         async function deleteUser(i) {
-            if(confirm("Révoquer cet accès ?")) { users.splice(i, 1); renderUserList(); await fetch(URL, { method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(users) }); }
+            if(!confirm("Supprimer l'accès de cet agent ?")) return;
+            users.splice(i, 1);
+            await syncDB();
+            renderUserList();
         }
 
-        function toggleAdminModal(show) { document.getElementById('admin-modal').classList.toggle('hidden', !show); }
-        
-        setInterval(() => {
+        async function syncDB() {
+            await fetch(URL, { 
+                method: 'PUT', 
+                headers: {"Content-Type":"application/json", "X-Master-Key": API_KEY}, 
+                body: JSON.stringify(users)
+            });
+        }
+
+        // HORLOGE
+        setInterval(() => { 
             const now = new Date();
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString('fr-FR');
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('fr-FR', {hour12: false}); 
         }, 1000);
     </script>
 </body>
