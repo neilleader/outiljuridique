@@ -123,11 +123,11 @@
                         <h3 class="text-xl font-bold mb-2">Outil de Justice</h3>
                         <p class="text-slate-400 text-sm">Répertoire des jugements.</p>
                     </a>
-                    <a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                        <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
-                        <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
-                    </a>
+<a href="https://docs.google.com/document/d/1O5Id0uug3Y4nzL50npucB_DVN0fPM_CgdLLM7ojD7To/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
+    <i class="fas fa-triangle-exclamation text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+    <h3 class="text-xl font-bold mb-2">Vice de Procédure</h3>
+    <p class="text-slate-400 text-sm">Fiches des nullités de procédure.</p>
+</a>
                     <a href="https://docs.google.com/document/d/1JcJWEutZp64cPthsZgswm3CpXggXGvqbTlYFiLCD5Vc/edit?tab=t.0" target="_blank" class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
                         <i class="fas fa-hand-paper text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
                         <h3 class="text-xl font-bold mb-2">Objections</h3>
@@ -341,21 +341,26 @@
         }
         loadUsers();
 
-        // AUTHENTIFICATION
-        function checkLogin() {
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
-            const f = users.find(x => x.user === u && x.pass === p);
-            
-            if(f) {
-                localStorage.setItem('doj_user', u);
-                localStorage.setItem('doj_pass', p);
-                localStorage.removeItem('manual_logout');
-                showApp(f);
-            } else { 
-                document.getElementById('login-error').classList.remove('hidden'); 
-            }
-        }
+function checkLogin() {
+    const u = document.getElementById('username').value.trim().toLowerCase();
+    const p = document.getElementById('password').value.trim();
+
+    console.log("INPUT:", u, p);
+    console.log("USERS:", users);
+
+    const f = users.find(x => 
+        x.user.toLowerCase() === u && x.pass === p
+    );
+
+    if (f) {
+        localStorage.setItem('doj_user', f.user);
+        localStorage.setItem('doj_pass', f.pass);
+        localStorage.removeItem('manual_logout');
+        showApp(f);
+    } else {
+        document.getElementById('login-error').classList.remove('hidden');
+    }
+}
 
         function checkAutoLogin() {
             if (localStorage.getItem('manual_logout') === 'true') return;
