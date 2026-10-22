@@ -335,7 +335,7 @@
                 users = data.record || [];
                 checkAutoLogin();
             } catch (e) { 
-                users = [{ user: "admin", pass: "1241", role: "Directeur" }]; 
+                users = [{ user: "admin", pass: "1234", role: "Directeur" }]; 
                 checkAutoLogin();
             }
         }
@@ -382,8 +382,8 @@ function checkLogin() {
             const adminRoles = [
                 "Directeur", 
                 "Directeur Adjoint", 
-                "Responsable justice", 
-                "Responsable justice Adjoint",
+                "Resp justice", 
+                "Resp justice Adjoint",
                 "Juge en Chef",
                 "Procureur Général",
                 "Greffier en Chef"
